@@ -1,0 +1,132 @@
+Gemini
+AI Project: Literature Review Assistant
+Conversation with Gemini
+help me to create another project for a student name Manas Das with the topic "Literature Review Assistant (key point extractor)" for the course name "Basic AI tools & Applications" Programme Name : B.Sc. ANCS 2025,
+
+i will tell you the details about the tool they are asking for and how to create it.
+
+are you ready  to help with with this project ? 
+
+I am absolutely ready to help you build this Literature Review Assistant for Manas. You have a great track record of stepping up to build technical academic tools for your peers, and this sounds like a fantastic, highly practical project for the "Basic AI tools & Applications" course.
+
+A key point extractor is a perfect use case for demonstrating AI capabilities. I am standing by to help you write the code, structure the logic, or draft the project documentation for his B.Sc. ANCS 2025 submission.
+
+Whenever you are ready, lay out the details of what the tool needs to do and your plan for creating it.
+
+To help me tailor my guidance right out of the gate, what specific programming language or AI models/libraries are you planning to use for the extraction logic?
+
+make a web based AI tool for this project."Literature Review Assistant (key point extractor)". write 1 html file with html css and javascript all inside it. put a input field asking for the gemini API key. i won't hard-code the API. use gemini 2.5 flash general free version to call API locally or from anywhere. in the web page put a title (if you choose a theme based title for this project make sure to put the actual project title under it, as a sub-title at least, if not then put the actual project title), write a short theme based description about the project (you may put a catchy phrase for this tool in the web page as the description), and mention the owner of this tool with a phrase like "develeped by Manas Das". the color and web page theme is "the living literature of starlit pages of sacred magic books within Celestial Library of moonlit hall". choose appropriate colores and images based on this theme. go all out on styling and animation to look very cool based on the theme. make the web page responsive for both desktop and mobile view. put a line at the bottom of the page saying something like this... "this project is developed under the guidance of Mr. Samudranil Maity" and mention the department "Cyber Science and Technology" and also mention the university name "Brainware University. 
+
+You stopped this response
+make a web based AI tool for this project."Literature Review Assistant (key point extractor)". write 1 html file with html css and javascript all inside it. put a input field asking for the gemini API key. i won't hard-code the API. use gemini 2.5 flash general free version to call API locally or from anywhere. in the web page put a title (if you choose a theme based title for this project make sure to put the actual project title under it, as a sub-title at least, if not then put the actual project title), write a short theme based description about the project (you may put a catchy phrase for this tool in the web page as the description), and mention the owner of this tool with a phrase like "develeped by Manas Das". the color and web page theme is "the living literature of starlit pages of sacred magic books within Celestial Library of moonlit hall". choose appropriate colores and images based on this theme. go all out on styling and animation to look very cool based on the theme. make the web page responsive for both desktop and mobile view. put a line at the bottom of the page saying something like this... "this project is developed under the guidance of Mr. Samudranil Maity" and mention the department "Cyber Science and Technology" and also mention the university name "Brainware University. 
+
+Here is the complete, single-file HTML solution for Manas Das.
+
+I've crafted the web app with the exact magical theme requested: "The Celestial Library of Moonlit Hall." It features a deep midnight/indigo color palette, a CSS-animated starlit background, glowing golden borders (like sacred magic books), and elegant fonts.
+
+The tool uses the Gemini 2.5 Flash API to extract key points from any pasted text, fully relying on the user's provided API key.
+Celestial Library - Key Point Extractor
+Apr 13, 2:22 PM
+
+I've crafted this file precisely according to your instructions.
+
+What's included in this build:
+The Theme: It looks like a magical tome hovering in a starlit night sky. I used CSS keyframes to generate twinkling stars dynamically and added deep blues, royal purples, and glowing gold elements.
+
+The AI Engine: It explicitly calls the gemini-2.5-flash model. It takes the text provided and instructs the model to act as a literature review assistant.
+
+Markdown Support: Because Gemini outputs markdown (bold text, headers, bullets), I included a lightweight library (marked.js) via CDN in the <head>. This ensures the key points format beautifully instead of showing raw asterisks.
+
+Formatting Constraints: Manas Das is credited right under the main title, the Brainware University and guide details are secured in a frosted glass footer, and it is 100% responsive for phone displays.
+
+You can click Preview to test the animations and the API connection! Let me know if you or Manas need any tweaks to the styling or the extraction prompt.
+
+generate a README.md file with readme syntax, with all the details about the project. college name "Brainware University" department name "Cyber Science and Technology", supervisor name "Mr. Samudranil Maity" with appropriate wordings. give steps on how to generate the gemini API key. 
+
+Your Markdown file is ready
+MD icon
+ README 
+MD
+
+I have generated the README.md file for Manas's project! It includes all the academic details formatted perfectly for his submission, alongside a comprehensive guide on how to safely generate a Gemini API Key.
+
+The markdown layout uses standard GitHub-friendly syntax, so it will look clean and professional if he uploads it to a code repository or prints it for his project documentation. Let me know if you need to add any additional sections to it!
+
+
+
+
+
+Gemini is AI and can make mistakes.
+
+# 🌌 Astral Tome of Knowledge: Literature Review Assistant
+
+**A celestial-themed, AI-powered key point extractor for academic literature.**
+
+---
+
+## 🎓 Academic Context
+
+- **Developer:** Manas Das
+- **Programme:** B.Sc. ANCS (Class of 2025)
+- **Course:** Basic AI tools & Applications
+- **Department:** Cyber Science and Technology
+- **Institution:** Brainware University
+- **Supervision:** This project was conceptually formulated and developed under the esteemed guidance of **Mr. Samudranil Maity**.
+
+---
+
+## 📖 Project Overview
+
+The **Literature Review Assistant** is a single-page web application designed to help students, researchers, and academics quickly distill large bodies of text. By utilizing the power of Google's **Gemini 2.5 Flash** model, the tool reads pasted literature, articles, or academic papers and automatically extracts:
+1. The core theme/topic.
+2. A bulleted list of absolute key points and findings.
+3. A concluding summary.
+
+The application is entirely client-side, meaning no servers or databases are required. It uses a secure, local API call directly from the user's browser.
+
+---
+
+## ✨ Features
+
+- **Single-File Architecture:** All HTML, CSS (Tailwind), and JavaScript are bundled into one lightweight `index.html` file.
+- **Bring Your Own Key (BYOK):** Users provide their own Gemini API key, ensuring privacy and eliminating hard-coded credentials.
+- **Markdown Output:** Rendered beautifully using `marked.js` for clean, readable notes.
+- **"Celestial Library" Theme:** Features a fully responsive, custom-styled interface with glassmorphism, glowing accents, and CSS-animated starlit backgrounds.
+- **One-Click Copy:** Easily copy extracted notes directly to the clipboard.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- A modern web browser (Chrome, Firefox, Edge, Safari).
+- An active internet connection (to load Tailwind CSS, Google Fonts, Marked.js, and reach the Gemini API).
+- A **Gemini API Key**.
+
+### Installation & Usage
+1. Download or clone this repository (or simply save the `index.html` file).
+2. Double-click `index.html` to open it in your web browser.
+3. Enter your Gemini API Key in the "Sacred Key" input field.
+4. Paste your academic text into the "The Unread Tome" text area.
+5. Click **"Extract Magical Insights"**.
+6. View, read, or copy your summarized notes!
+
+---
+
+## 🔑 How to Generate a Gemini API Key
+
+To use this tool, you need a free API key from Google AI Studio. Follow these simple steps:
+
+1. **Visit Google AI Studio:** Navigate to [aistudio.google.com](https://aistudio.google.com/).
+2. **Sign In:** Log in using your Google account.
+3. **Navigate to API Keys:** On the left-hand sidebar, click on the **"Get API key"** menu option.
+4. **Create Key:** Click the **"Create API key"** button.
+5. **Select Project:** If prompted, choose an existing Google Cloud project or let Google AI Studio create a new one for you.
+6. **Copy the Key:** Once generated, an alphanumeric string will appear. **Copy this key.**
+7. **Keep it Secret:** Never commit your API key to a public GitHub repository. Paste it securely into the web app when you are ready to use it.
+
+---
+
+*Designed to bring clarity to the cosmos of academic research.*
+README.md
+Displaying README.md.
