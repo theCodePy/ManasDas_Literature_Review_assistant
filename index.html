@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Literature Review Assistant | Celestial Library</title>
+    <link rel="icon" type="image/x-icon" href="./brainwarelogo.png">
+    
+    <!-- Tailwind CSS for responsive layout -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Marked.js for rendering markdown output from Gemini -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- Google Fonts for magical aesthetic -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Quicksand:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS Variables for Theming */
+        :root {
+            --midnight-blue: #0b0f19;
+            --deep-purple: #1a1025;
+            --moonlight: #c4d8f0;
+            --gold: #d4af37;
+            --gold-glow: rgba(212, 175, 55, 0.5);
+            --magic-cyan: #00e5ff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--midnight-blue);
+            background-image: radial-gradient(circle at 50% 0%, var(--deep-purple) 0%, var(--midnight-blue) 70%);
+            color: var(--moonlight);
+            font-family: 'Quicksand', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Typography */
+        h1, h2, h3, .magical-font {
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Starlit Background Animation */
+        #stars-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite ease-in-out alternate;
+            box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.4);
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 8px 2px var(--magic-cyan); }
+        }
+
+        /* Layout z-indexing */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Glassmorphism / Magic Book Elements */
+        .magic-glass {
+            background: rgba(20, 25, 40, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(212, 175, 55, 0.05);
+            border-radius: 12px;
+        }
+
+        .magic-input {
+            background: rgba(10, 12, 20, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            color: var(--moonlight);
+            transition: all 0.3s ease;
+        }
+
+        .magic-input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 15px var(--gold-glow);
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--midnight-blue); }
+        ::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.5); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+        /* Magic Button */
+        .magic-btn {
+            background: linear-gradient(135deg, #1a1025, #2a1b40);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .magic-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.4), transparent);
+            transition: all 0.4s ease;
+        }
+
+        .magic-btn:hover {
+            box-shadow: 0 0 20px var(--gold-glow);
+            text-shadow: 0 0 5px var(--gold);
+            transform: translateY(-2px);
+        }
+
+        .magic-btn:hover::before {
+            left: 100%;
+            transition: all 0.6s ease;
+        }
+
+        .magic-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* Markdown Output Styles */
+        #output-content h1, #output-content h2, #output-content h3 {
+            color: var(--gold);
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            font-family: 'Cinzel', serif;
+        }
+        #output-content p { margin-bottom: 1rem; line-height: 1.6; }
+        #output-content ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; }
+        #output-content li { margin-bottom: 0.5rem; }
+        #output-content strong { color: #fff; text-shadow: 0 0 3px rgba(255,255,255,0.3); }
+
+        /* Loader */
+        .loader {
+            border: 3px solid rgba(212, 175, 55, 0.2);
+            border-top: 3px solid var(--gold);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <!-- CSS Animation Container for Stars -->
+    <div id="stars-container"></div>
+
+    <div class="content-wrapper">
+        <!-- Header -->
+        <header class="text-center pt-10 pb-6 px-4">
+            <h1 class="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-500 to-yellow-200 drop-shadow-lg mb-2">
+                Astral Tome of Knowledge
+            </h1>
+            <h2 class="text-xl md:text-2xl magical-font text-[#d4af37] mb-4">
+                Literature Review Assistant (Key Point Extractor)
+            </h2>
+            <p class="text-md md:text-lg italic text-blue-200 opacity-90 max-w-2xl mx-auto">
+                "Unveil the hidden wisdom within the living literature of starlit pages. Whisper to the sacred magic books of the Celestial Library to distill absolute truth."
+            </p>
+            <div class="mt-4 inline-block px-4 py-1 border border-[#d4af37]/40 rounded-full bg-[#1a1025]/60 text-sm">
+                <span class="text-gray-300">Spellcrafted & Developed by </span> 
+                <span class="text-[#d4af37] font-semibold tracking-wide">Manas Das</span>
+            </div>
+        </header>
+
+        <!-- Main Application Area -->
+        <main class="flex-grow container mx-auto px-4 py-6 max-w-4xl flex flex-col gap-6">
+            
+            <!-- API Key Section -->
+            <section class="magic-glass p-5 flex flex-col md:flex-row gap-4 items-center justify-between">
+                <div class="flex-grow w-full">
+                    <label for="apiKey" class="block text-sm font-semibold text-[#d4af37] mb-2 font-['Cinzel']">Sacred Key (Gemini API Key):</label>
+                    <input type="password" id="apiKey" placeholder="Enter your Gemini 2.5 Flash API Key here..." 
+                           class="magic-input w-full p-3 rounded-lg font-mono text-sm placeholder-gray-500">
+                </div>
+                <div class="text-xs text-blue-300 opacity-70 md:w-1/3 text-center md:text-left mt-2 md:mt-0">
+                    Your key is used locally in your browser to access the celestial network. It is never stored.
+                </div>
+            </section>
+
+            <!-- Input Section -->
+            <section class="magic-glass p-6 flex flex-col flex-grow">
+                <label for="literatureText" class="block text-xl font-bold text-[#d4af37] mb-3 magical-font flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#d4af37]"><path d="M4 19.5v-15A2.5 2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 2.5 0 0 1 0-5H20"/></svg>
+                    The Unread Tome (Paste Literature Here):
+                </label>
+                <textarea id="literatureText" rows="8" placeholder="Paste the academic paper, article, or literature you wish to distill..." 
+                          class="magic-input w-full p-4 rounded-lg resize-y flex-grow font-serif leading-relaxed"></textarea>
+                
+                <div class="mt-6 flex justify-center">
+                    <button id="extractBtn" class="magic-btn magical-font px-8 py-3 rounded-lg font-bold text-lg flex items-center justify-center min-w-[250px]" onclick="extractMagic()">
+                        Extract Magical Insights
+                    </button>
+                </div>
+            </section>
+
+            <!-- Output Section -->
+            <section id="output-section" class="magic-glass p-6 hidden flex-col">
+                <div class="flex justify-between items-center mb-4 border-b border-[#d4af37]/30 pb-2">
+                    <h3 class="text-2xl font-bold text-[#d4af37] magical-font">Distilled Wisdom</h3>
+                    <button onclick="copyToClipboard()" class="text-sm text-blue-300 hover:text-[#d4af37] transition-colors flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        Copy Runes
+                    </button>
+                </div>
+                
+                <!-- This div will contain the rendered Markdown -->
+                <div id="output-content" class="text-gray-200 overflow-auto flex-grow prose prose-invert">
+                    <!-- Content injected here by JS -->
+                </div>
+            </section>
+
+            <!-- Error Banner -->
+            <div id="error-banner" class="hidden bg-red-900/50 border border-red-500 text-red-200 p-4 rounded-lg text-center mt-4 backdrop-blur-sm">
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="mt-auto py-6 border-t border-blue-900/50 bg-[#0a0c16]/80 backdrop-blur-sm text-center">
+            <div class="container mx-auto px-4 text-sm md:text-base text-gray-400">
+                <p class="mb-1 text-gray-300">
+                    This project is developed under the guidance of <span class="text-[#d4af37] font-semibold">Mr. Samudranil Maity</span>
+                </p>
+                <p class="magical-font tracking-wider opacity-80">
+                    Department of Cyber Science and Technology <span class="mx-2 text-[#d4af37]">|</span> Brainware University
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- 1. Background Animation Logic ---
+        function createStars() {
+            const container = document.getElementById('stars-container');
+            const numStars = window.innerWidth < 768 ? 50 : 120; // fewer stars on mobile
+            
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Random positioning
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                
+                // Random size (1px to 3px)
+                const size = Math.random() * 2 + 1;
+                
+                // Random animation duration (2s to 6s)
+                const duration = Math.random() * 4 + 2;
+                
+                // Random animation delay
+                const delay = Math.random() * 5;
+
+                star.style.left = `${x}vw`;
+                star.style.top = `${y}vh`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.setProperty('--duration', `${duration}s`);
+                star.style.animationDelay = `${delay}s`;
+                
+                container.appendChild(star);
+            }
+        }
+        
+        // Initialize stars on load
+        window.addEventListener('DOMContentLoaded', createStars);
+
+
+        // --- 2. AI Tool Logic (Gemini API) ---
+        async function extractMagic() {
+            const apiKeyInput = document.getElementById('apiKey');
+            const textInput = document.getElementById('literatureText');
+            const btn = document.getElementById('extractBtn');
+            const outputSection = document.getElementById('output-section');
+            const outputContent = document.getElementById('output-content');
+            const errorBanner = document.getElementById('error-banner');
+
+            const apiKey = apiKeyInput.value.trim();
+            const literatureText = textInput.value.trim();
+
+            // Validation
+            if (!apiKey) {
+                showError("The magic cannot flow without a Sacred Key. Please provide your Gemini API Key.");
+                apiKeyInput.focus();
+                return;
+            }
+            if (!literatureText) {
+                showError("The tome is empty! Please paste some literature to extract insights from.");
+                textInput.focus();
+                return;
+            }
+
+            // UI Reset & Loading State
+            hideError();
+            outputSection.classList.remove('hidden');
+            outputSection.style.display = 'flex'; // override tailwind block for flex
+            outputContent.innerHTML = `<div class="flex items-center justify-center text-[#d4af37] italic py-8">
+                                          <span class="loader"></span> Decoding the ancient texts and extracting key points...
+                                       </div>`;
+            btn.disabled = true;
+            btn.innerHTML = "Channeling Magic...";
+
+            // API Call Preparation
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+            
+            const prompt = `You are a Literature Review Assistant. Your task is to analyze the following academic text, article, or literature snippet and extract the most important information. 
+            
+            Please provide a structured, easy-to-read summary including:
+            1. The core theme or main topic.
+            2. A bulleted list of the absolute key points, findings, or arguments.
+            3. A brief concluding thought or summary of the text's significance.
+            
+            Format the response nicely using Markdown. Keep it concise, academic, yet accessible.
+
+            Here is the text to analyze:
+            """
+            ${literatureText}
+            """`;
+
+            const requestBody = {
+                contents: [{
+                    parts: [{ text: prompt }]
+                }]
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestBody)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error?.message || "An unknown mystical disturbance occurred (API Error).");
+                }
+
+                if (data.candidates && data.candidates[0].content && data.candidates[0].content.parts) {
+                    const markdownText = data.candidates[0].content.parts[0].text;
+                    // Render markdown to HTML using Marked.js
+                    outputContent.innerHTML = marked.parse(markdownText);
+                    // Scroll to results smoothly
+                    outputSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    throw new Error("The oracle returned a confusing vision. (Unexpected API response structure)");
+                }
+
+            } catch (error) {
+                showError(`Failed to cast extraction spell: ${error.message}`);
+                outputSection.classList.add('hidden');
+            } finally {
+                // Restore Button State
+                btn.disabled = false;
+                btn.innerHTML = "Extract Magical Insights";
+            }
+        }
+
+        // --- 3. Utility Functions ---
+        function showError(message) {
+            const errorBanner = document.getElementById('error-banner');
+            errorBanner.textContent = message;
+            errorBanner.classList.remove('hidden');
+            setTimeout(() => { errorBanner.classList.add('hidden'); }, 8000);
+        }
+
+        function hideError() {
+            document.getElementById('error-banner').classList.add('hidden');
+        }
+
+        function copyToClipboard() {
+            const outputContent = document.getElementById('output-content');
+            // Create a temporary textarea to hold the plain text equivalent for copying
+            const tempTextArea = document.createElement("textarea");
+            tempTextArea.value = outputContent.innerText; 
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            
+            try {
+                document.execCommand('copy');
+                // Optional: show a quick success toast or change button text temporarily
+                const originalTitle = document.title;
+                document.title = "Copied to Clipboard!";
+                setTimeout(() => document.title = originalTitle, 2000);
+            } catch (err) {
+                console.error('Failed to copy text', err);
+                alert("Failed to copy text. Your browser might not support this feature.");
+            }
+            
+            document.body.removeChild(tempTextArea);
+        }
+    </script>
+</body>
+</html>
